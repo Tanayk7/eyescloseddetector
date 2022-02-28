@@ -40,7 +40,7 @@ def serializeFrame(frame):
 	b64_src = 'data:image/jpeg;base64,'
 
 	return b64_src + stringData
-
+ 
 # when a frame arrives from the client 
 @socket_.on('frame', namespace='/')
 def frameEvent(base64_string):
