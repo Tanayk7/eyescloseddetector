@@ -13,7 +13,7 @@ from flask_socketio import SocketIO, emit, disconnect
 from face import eye_aspect_ratio
 
 app = Flask(__name__)
-socket_ = SocketIO(app, async_mode=None, cors_allowed_origins='*')
+socket_ = SocketIO(app, cors_allowed_origins='*')
 
 # time in seconds 
 eyes_closed_time_threshold = 10
@@ -21,7 +21,7 @@ ear_threshold = 0.29
 time_limit_reached = False
 start_time = None
 eyes_closed = False
-plot=('left_eye','right_eye')
+plot = ('left_eye','right_eye')
 
 # extract the frame from the base64 encoded data for opencv to process
 def extract_frame(base64_string):
