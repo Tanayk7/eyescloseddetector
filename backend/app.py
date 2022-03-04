@@ -122,4 +122,4 @@ def frameEvent(base64_string):
 
 
 if __name__ == '__main__':
-	socket_.run(app, host='0.0.0.0', debug=True)
+	socket_.run(app, debug=True)
