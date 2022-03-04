@@ -49,57 +49,57 @@ def eye_aspect_ratio(eye_coords):
     return (A + B) / (2 * C) 
 
 # declare the video capture object 
-video_capture = cv2.VideoCapture(0)
-video_capture.set(cv2.CAP_PROP_FPS, 60)
+# video_capture = cv2.VideoCapture(0)
+# video_capture.set(cv2.CAP_PROP_FPS, 60)
 
-eyes_closed_time_threshold = 10
-ear_threshold = 0.29
-start_time = None
-eyes_closed = False
+# eyes_closed_time_threshold = 10
+# ear_threshold = 0.29
+# start_time = None
+# eyes_closed = False
 
-def detectEyesClosed(): 
-    while True: 
-        # read frames from webcam
-        ret, frame = video_capture.read()
+# def detectEyesClosed(): 
+#     while True: 
+#         # read frames from webcam
+#         ret, frame = video_capture.read()
 
-        # small_frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+#         # small_frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
 
-        # get the face landmark list 
-        face_landmark_list = plot_landmarks(frame)
+#         # get the face landmark list 
+#         face_landmark_list = plot_landmarks(frame)
 
-        # get individual features and check if the eyes are closed 
-        if(len(face_landmark_list) > 0): 
-            # get the landmarks for the left and the right eye
-            left_eye = face_landmark_list[0]['left_eye']
-            right_eye = face_landmark_list[0]['right_eye']
+#         # get individual features and check if the eyes are closed 
+#         if(len(face_landmark_list) > 0): 
+#             # get the landmarks for the left and the right eye
+#             left_eye = face_landmark_list[0]['left_eye']
+#             right_eye = face_landmark_list[0]['right_eye']
 
-            # get the eye aspect ratios for the left and the right eyes 
-            ear_left = eye_aspect_ratio(left_eye)
-            ear_right = eye_aspect_ratio(right_eye)
+#             # get the eye aspect ratios for the left and the right eyes 
+#             ear_left = eye_aspect_ratio(left_eye)
+#             ear_right = eye_aspect_ratio(right_eye)
 
-            # average eye aspect ratio value for left and right eyes 
-            ear_avg = (ear_left + ear_right) / 2
+#             # average eye aspect ratio value for left and right eyes 
+#             ear_avg = (ear_left + ear_right) / 2
 
-            if ear_avg < ear_threshold: 
-                eyes_closed = True
+#             if ear_avg < ear_threshold: 
+#                 eyes_closed = True
 
-                if start_time == None: 
-                    start_time = time.time()
+#                 if start_time == None: 
+#                     start_time = time.time()
                 
-            else: 
-                start_time = None
-                eyes_closed = False
+#             else: 
+#                 start_time = None
+#                 eyes_closed = False
 
-            if eyes_closed: 
-                print("Eyes closed!")
+#             if eyes_closed: 
+#                 print("Eyes closed!")
 
-            if start_time != None and eyes_closed and time.time() - start_time >= eyes_closed_time_threshold: 
-                print(f'Eyes closed for more than {eyes_closed_time_threshold} seconds!')
+#             if start_time != None and eyes_closed and time.time() - start_time >= eyes_closed_time_threshold: 
+#                 print(f'Eyes closed for more than {eyes_closed_time_threshold} seconds!')
 
-        key = cv2.waitKey(50)
+#         key = cv2.waitKey(50)
 
-        if key == ord('q'):
-            break
+#         if key == ord('q'):
+#             break
 
-if __name__ == '__main__':
-    detectEyesClosed()
+# if __name__ == '__main__':
+#     detectEyesClosed()

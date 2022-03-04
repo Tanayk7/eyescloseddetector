@@ -1,3 +1,7 @@
 venv
 __pycache__
 images
+aws
+docker-compose.yml
+Dockerfile
+Procfile

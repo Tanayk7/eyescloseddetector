@@ -9,8 +9,7 @@ import face_recognition
 from PIL import Image
 from flask import Flask
 from flask_cors import CORS
-from flask_socketio import SocketIO, emit, disconnect
-from face import eye_aspect_ratio
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 socket_ = SocketIO(app, cors_allowed_origins='*')
@@ -23,6 +22,25 @@ start_time = None
 eyes_closed = False
 plot = ('left_eye','right_eye')
 
+
+# returns the aspect ratio of the vertical landmarks to the vertical landmarks (used to determine if the eyes are closed)
+def eye_aspect_ratio(eye_coords):    
+    left = np.array(eye_coords[0])
+    right = np.array(eye_coords[3])
+    
+    top_left = np.array(eye_coords[1])
+    bottom_left = np.array(eye_coords[5])
+
+    top_right = np.array(eye_coords[2])
+    bottom_right = np.array(eye_coords[4])
+
+    A = np.linalg.norm(top_left - bottom_left)
+    B = np.linalg.norm(top_right - bottom_right)
+    C = np.linalg.norm(left - right)
+
+    return (A + B) / (2 * C) 
+
+
 # extract the frame from the base64 encoded data for opencv to process
 def extract_frame(base64_string):
 	idx = base64_string.find('base64,')
@@ -33,6 +51,7 @@ def extract_frame(base64_string):
 
 	return cv2.cvtColor(np.array(pimg), cv2.COLOR_RGB2BGR)
 
+
 # encode the frame back into a base64 string to send to the client
 def serializeFrame(frame):
 	imgencode = cv2.imencode('.jpeg', frame, [cv2.IMWRITE_JPEG_QUALITY,1000])[1]
@@ -41,6 +60,7 @@ def serializeFrame(frame):
 
 	return b64_src + stringData
  
+
 # when a frame arrives from the client 
 @socket_.on('frame', namespace='/')
 def frameEvent(base64_string):
@@ -100,5 +120,6 @@ def frameEvent(base64_string):
 	emit('time_limit_reached', json.dumps({ 'limit_reached': 0 }))
 	emit('response_back', stringData)
 
+
 if __name__ == '__main__':
-	socket_.run(app, debug=True)
+	socket_.run(app, host='0.0.0.0', debug=True)
