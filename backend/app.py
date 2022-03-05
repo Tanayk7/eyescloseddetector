@@ -10,6 +10,7 @@ from PIL import Image
 from flask import Flask
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
+from engineio.payload import Payload
 
 app = Flask(__name__)
 socket_ = SocketIO(app, cors_allowed_origins='*')
@@ -22,6 +23,7 @@ start_time = None
 eyes_closed = False
 plot = ('left_eye','right_eye')
 
+Payload.max_decode_packets = 500
 
 # returns the aspect ratio of the vertical landmarks to the vertical landmarks (used to determine if the eyes are closed)
 def eye_aspect_ratio(eye_coords):    

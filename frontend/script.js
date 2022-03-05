@@ -1,4 +1,4 @@
-const socket = io("http://127.0.0.1:5000");
+const socket = io("ws://127.0.0.1:5000");
 const canvas = document.getElementById('canvasOutput');
 const video = document.querySelector("#videoElement");
 const context = canvas.getContext('2d');
